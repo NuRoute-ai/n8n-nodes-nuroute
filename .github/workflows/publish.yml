@@ -1,0 +1,32 @@
+name: Publish to npm
+
+# Runs only on a version tag (e.g. `v1.0.1`), pushed once the corresponding
+# package.json version has already been committed. npm provenance requires the
+# publish to happen from a GitHub Actions run via OIDC — a publish from a
+# laptop, which is how earlier versions of this package were published,
+# can never carry a provenance attestation.
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+  id-token: write  # required so npm can mint a provenance attestation via OIDC
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - run: npm install
+      - run: npm run build
+      - run: npm publish --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
