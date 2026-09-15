@@ -25,7 +25,12 @@ jobs:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
 
-      - run: npm install
+      # --ignore-scripts: n8n-workflow pulls in isolated-vm transitively (used only for n8n's
+      # own sandboxed code-execution feature at runtime); its native addon build is broken on
+      # newer toolchains and unnecessary here since we only need n8n-workflow for its
+      # TypeScript types, never its runtime — same reasoning already applied for this same
+      # dependency in the main monorepo's pnpm config.
+      - run: npm install --ignore-scripts
       - run: npm run build
       - run: npm publish --provenance
         env:
