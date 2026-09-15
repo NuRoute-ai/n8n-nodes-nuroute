@@ -1,11 +1,15 @@
 {
   "name": "n8n-nodes-nuroute",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "n8n community node for NuRoute chat completions",
   "keywords": [
     "n8n-community-node-package"
   ],
   "license": "MIT",
+  "author": {
+    "name": "Amit Gupta",
+    "email": "a.gupta@nuroute.ai"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/NuRoute-ai/n8n-nodes-nuroute.git"
