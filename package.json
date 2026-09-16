@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-nuroute",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "n8n community node for NuRoute chat completions",
   "keywords": [
     "n8n-community-node-package"
@@ -28,9 +28,9 @@
     ]
   },
   "scripts": {
-    "build": "tsc && cp src/nodes/NuRoute/nuroute.png dist/nodes/NuRoute/nuroute.png",
+    "build": "tsc && cp nodes/NuRoute/nuroute.png dist/nodes/NuRoute/nuroute.png",
     "dev": "tsc --watch",
-    "lint": "eslint src"
+    "lint": "eslint nodes credentials"
   },
   "peerDependencies": {
     "n8n-workflow": "*"
