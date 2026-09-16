@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-nuroute",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "n8n community node for NuRoute chat completions",
   "keywords": [
     "n8n-community-node-package"
@@ -14,6 +14,7 @@
     "type": "git",
     "url": "https://github.com/NuRoute-ai/n8n-nodes-nuroute.git"
   },
+  "homepage": "https://github.com/NuRoute-ai/n8n-nodes-nuroute#readme",
   "main": "dist/index.js",
   "files": [
     "dist"
@@ -28,7 +29,7 @@
     ]
   },
   "scripts": {
-    "build": "tsc && cp nodes/NuRoute/nuroute.png dist/nodes/NuRoute/nuroute.png",
+    "build": "tsc && cp nodes/NuRoute/nuroute.svg dist/nodes/NuRoute/nuroute.svg && cp credentials/nuroute.svg dist/credentials/nuroute.svg",
     "dev": "tsc --watch",
     "lint": "eslint nodes credentials"
   },

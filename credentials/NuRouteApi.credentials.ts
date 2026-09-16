@@ -9,6 +9,7 @@ export class NuRouteApi implements ICredentialType {
   name = 'nuRouteApi';
   displayName = 'NuRoute API';
   documentationUrl = 'https://nuroute.ai/docs';
+  icon = { light: 'file:nuroute.svg', dark: 'file:nuroute.svg' } as const;
 
   properties: INodeProperties[] = [
     {

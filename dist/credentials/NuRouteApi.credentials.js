@@ -5,6 +5,7 @@ class NuRouteApi {
     name = 'nuRouteApi';
     displayName = 'NuRoute API';
     documentationUrl = 'https://nuroute.ai/docs';
+    icon = { light: 'file:nuroute.svg', dark: 'file:nuroute.svg' };
     properties = [
         {
             displayName: 'Base URL',

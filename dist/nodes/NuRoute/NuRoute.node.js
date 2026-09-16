@@ -6,12 +6,13 @@ class NuRoute {
     description = {
         displayName: 'NuRoute',
         name: 'nuRoute',
-        icon: 'file:nuroute.png',
+        icon: { light: 'file:nuroute.svg', dark: 'file:nuroute.svg' },
         group: ['transform'],
         version: 1,
         subtitle: '={{$parameter["model"]}}',
         description: 'Send a chat completion request through your NuRoute gateway',
         defaults: { name: 'NuRoute' },
+        usableAsTool: true,
         inputs: [n8n_workflow_1.NodeConnectionTypes.Main],
         outputs: [n8n_workflow_1.NodeConnectionTypes.Main],
         credentials: [{ name: 'nuRouteApi', required: true }],
@@ -144,7 +145,15 @@ class NuRoute {
                     returnData.push({ json: { error: error.message }, pairedItem: { item: i } });
                     continue;
                 }
-                throw error;
+                // The empty-messages check above already throws NodeOperationError — re-wrap (not
+                // re-throw) to satisfy n8n's lint rule against bare `throw <caughtVar>`, which flags
+                // that pattern regardless of any instanceof narrowing. Anything else came from the
+                // HTTP call and needs wrapping for n8n to render it as a proper API error instead of
+                // a raw stack trace.
+                if (error instanceof n8n_workflow_1.NodeOperationError) {
+                    throw new n8n_workflow_1.NodeOperationError(this.getNode(), error, { itemIndex: i });
+                }
+                throw new n8n_workflow_1.NodeApiError(this.getNode(), error, { itemIndex: i });
             }
         }
         return [returnData];

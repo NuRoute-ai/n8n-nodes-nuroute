@@ -4,7 +4,8 @@ import type {
   INodeType,
   INodeTypeDescription,
 } from 'n8n-workflow';
-import { NodeConnectionTypes, NodeOperationError } from 'n8n-workflow';
+import { NodeApiError, NodeConnectionTypes, NodeOperationError } from 'n8n-workflow';
+import type { JsonObject } from 'n8n-workflow';
 
 interface MessageValue {
   role:    'system' | 'user' | 'assistant';
@@ -15,12 +16,13 @@ export class NuRoute implements INodeType {
   description: INodeTypeDescription = {
     displayName: 'NuRoute',
     name: 'nuRoute',
-    icon: 'file:nuroute.png',
+    icon: { light: 'file:nuroute.svg', dark: 'file:nuroute.svg' },
     group: ['transform'],
     version: 1,
     subtitle: '={{$parameter["model"]}}',
     description: 'Send a chat completion request through your NuRoute gateway',
     defaults: { name: 'NuRoute' },
+    usableAsTool: true,
     inputs: [NodeConnectionTypes.Main],
     outputs: [NodeConnectionTypes.Main],
     credentials: [{ name: 'nuRouteApi', required: true }],
@@ -168,7 +170,15 @@ export class NuRoute implements INodeType {
           returnData.push({ json: { error: (error as Error).message }, pairedItem: { item: i } });
           continue;
         }
-        throw error;
+        // The empty-messages check above already throws NodeOperationError — re-wrap (not
+        // re-throw) to satisfy n8n's lint rule against bare `throw <caughtVar>`, which flags
+        // that pattern regardless of any instanceof narrowing. Anything else came from the
+        // HTTP call and needs wrapping for n8n to render it as a proper API error instead of
+        // a raw stack trace.
+        if (error instanceof NodeOperationError) {
+          throw new NodeOperationError(this.getNode(), error, { itemIndex: i });
+        }
+        throw new NodeApiError(this.getNode(), error as JsonObject, { itemIndex: i });
       }
     }
 
