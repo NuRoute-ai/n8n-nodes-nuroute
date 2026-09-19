@@ -1,9 +1,16 @@
 # n8n-nodes-nuroute
 
+[![npm version](https://img.shields.io/npm/v/n8n-nodes-nuroute)](https://www.npmjs.com/package/n8n-nodes-nuroute)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 An [n8n](https://n8n.io) community node for sending chat completion requests through your
 [NuRoute](https://nuroute.ai) gateway. Everything else
 (projects, routing config, policy, budgets, API keys) is managed from the NuRoute dashboard —
 this node is intentionally scoped to just chat completions.
+
+Set the Model parameter to `auto` and NuRoute predicts the cheapest model that can still answer
+each request well, so your workflow stops paying frontier prices for prompts a cheaper model
+would handle just as well.
 
 > This package replaces `n8n-nodes-aicp`, which is deprecated but still published and
 > supported for existing installs. New workflows should install `n8n-nodes-nuroute`.
@@ -37,3 +44,13 @@ Restart n8n and the "NuRoute" node will appear in the node panel.
 | Messages | One or more `{ role, content }` pairs — build a system prompt + conversation history |
 | Simplify Output | On by default: returns `{ content, model, finishReason, usage }` instead of the raw API response |
 | Additional Options → Temperature / Max Tokens / Provider | Optional — Provider pins a specific upstream provider; combine with Model `auto` to pick the best model from that provider |
+
+## Documentation
+
+Full documentation: [nuroute.ai/docs](https://nuroute.ai/docs)
+
+How routing decisions are made: [nuroute.ai/docs/concepts/routing-performance](https://nuroute.ai/docs/concepts/routing-performance)
+
+## License
+
+MIT
